@@ -162,16 +162,6 @@ Todos os componentes são modulares e reutilizáveis:
 - `movie-card`: Card de filme com informações completas
 - `movie-search`: Sistema de busca integrado
 
-## 🚀 Deploy
-
-Para fazer deploy da aplicação:
-
-```bash
-# Build para produção
-ng build --configuration production
-
-# Os arquivos estarão em dist/selecao-vlab/
-```
 
 
 
