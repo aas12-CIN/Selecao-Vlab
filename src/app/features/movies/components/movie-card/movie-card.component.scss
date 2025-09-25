@@ -4,11 +4,15 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: transform 0.3s ease-in-out;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 
   &:hover {
     transform: scale(1.05);
+    z-index: 10;
+    position: relative;
   }
 }
 
@@ -24,12 +28,22 @@
 .movie-title {
   font-size: 1.2rem;
   margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.movie-genre {
+  font-size: 0.9rem;
+  color: #007bff;
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+  font-style: italic;
 }
 
 .movie-overview {
   font-size: 0.9rem;
   color: #666;
   flex-grow: 1;
+  margin: 0 0 1rem 0;
 }
 
 .movie-details {

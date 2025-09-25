@@ -1,0 +1,163 @@
+<div class="theme-generator">
+  <!-- Header -->
+  <div class="generator-header">
+    <h2>🎬 Gerador por XXX</h2>
+    <p>Busque por diretores, atores ou qualquer pessoa da indústria cinematográfica</p>
+  </div>
+
+  <!-- Search Form -->
+  @if (!selectedPerson) {
+    <div class="search-section">
+      <div class="search-form">
+        <div class="search-input-group">
+          <input 
+            type="text" 
+            [(ngModel)]="searchQuery"
+            placeholder="Digite o nome da pessoa (ex: Christopher Nolan, Tom Hanks)"
+            class="search-input"
+            (keyup.enter)="searchPersons()">
+          <button 
+            class="search-btn"
+            (click)="searchPersons()"
+            [disabled]="isLoading || !searchQuery.trim()">
+            @if (isLoading) {
+              <span class="loading-spinner"></span>
+              Buscando...
+            } @else {
+              🔍 Buscar
+            }
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Results -->
+      @if (isSearchMode) {
+        <div class="search-results">
+          @if (isLoading) {
+            <div class="loading-state">
+              <div class="loading-spinner large"></div>
+              <p>Buscando pessoas...</p>
+            </div>
+          } @else if (errorMessage) {
+            <div class="error-state">
+              <p>{{ errorMessage }}</p>
+            </div>
+          } @else if (searchResults.length > 0) {
+            <div class="results-grid">
+              @for (person of searchResults; track person.id) {
+                <div class="person-card" (click)="selectPerson(person)">
+                  <div class="person-image">
+                    <img 
+                      [src]="getProfileUrl(person.profile_path)" 
+                      [alt]="person.name"
+                      loading="lazy">
+                  </div>
+                  <div class="person-info">
+                    <h3>{{ person.name }}</h3>
+                    <p class="department">{{ getDepartmentLabel(person.known_for_department) }}</p>
+                    <p class="popularity">Popularidade: {{ person.popularity | number:'1.1-1' }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else if (hasSearched) {
+            <div class="no-results">
+              <p>Nenhuma pessoa encontrada para "{{ searchQuery }}"</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Selected Person Filmography -->
+  @if (selectedPerson) {
+    <div class="filmography-section">
+      <!-- Person Header -->
+      <div class="person-header">
+        <button class="back-btn" (click)="goBackToSearch()">
+          ← Voltar à busca
+        </button>
+        <div class="person-details">
+          <div class="person-image-large">
+            <img 
+              [src]="getProfileUrl(selectedPerson.profile_path)" 
+              [alt]="selectedPerson.name">
+          </div>
+          <div class="person-info-large">
+            <h1>{{ selectedPerson.name }}</h1>
+            <p class="department">{{ getDepartmentLabel(selectedPerson.known_for_department) }}</p>
+            @if (selectedPerson.biography) {
+              <div class="biography">
+                <p>{{ selectedPerson.biography }}</p>
+              </div>
+            }
+            <div class="person-stats">
+              <span>Nascimento: {{ formatDate(selectedPerson.birthday) }}</span>
+              @if (selectedPerson.place_of_birth) {
+                <span>Local de Nascimento: {{ selectedPerson.place_of_birth }}</span>
+              }
+              @if (selectedPerson.deathday) {
+                <span>Falecimento: {{ formatDate(selectedPerson.deathday) }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filmography -->
+      <div class="filmography-content">
+        <h2>Filmografia</h2>
+        @if (isLoading) {
+          <div class="loading-state">
+            <div class="loading-spinner large"></div>
+            <p>Carregando filmografia...</p>
+          </div>
+        } @else if (personFilmography.length > 0) {
+          <div class="movies-grid">
+            @for (movie of personFilmography; track movie.id) {
+              <div class="movie-card">
+                <div class="movie-poster">
+                  <img 
+                    [src]="getPosterUrl(movie.poster_path)" 
+                    [alt]="movie.title"
+                    loading="lazy">
+                </div>
+                <div class="movie-info">
+                  <h3>{{ movie.title }}</h3>
+                  <p class="release-date">{{ formatDate(movie.release_date) }}</p>
+                  @if (movie.vote_average > 0) {
+                    <p class="rating">⭐ {{ movie.vote_average | number:'1.1-1' }}</p>
+                  }
+                  @if (movie.character) {
+                    <p class="character">Como: {{ movie.character }}</p>
+                  }
+                  @if (movie.job) {
+                    <p class="job">{{ getJobLabel(movie.job) }}</p>
+                  }
+                  <button 
+                    class="add-to-marathon-btn"
+                    (click)="addMovieToMarathon(movie)"
+                    title="Adicionar à Maratona">
+                    Adicionar à Maratona
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="no-movies">
+            <p>Nenhum filme encontrado na filmografia.</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Marathon Mode Warning -->
+  @if (!(isMarathonMode$ | async)) {
+    <div class="marathon-warning">
+      <p>⚠️ Ative o "Modo Maratona" na página de Maratonas para adicionar filmes à sua maratona atual.</p>
+    </div>
+  }
+</div>

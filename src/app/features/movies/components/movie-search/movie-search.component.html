@@ -1,0 +1,68 @@
+<div class="movie-search">
+  <!-- Search Toggle Button -->
+  <div class="search-toggle">
+    <button 
+      type="button" 
+      class="search-toggle__btn"
+      [class.active]="isSearchMode"
+      (click)="toggleSearchMode()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      {{ isSearchMode ? 'Fechar Busca' : 'Buscar Filmes' }}
+    </button>
+  </div>
+
+  <!-- Search Form -->
+  <div class="search-form" *ngIf="isSearchMode">
+    <form [formGroup]="searchForm" class="search-form__container">
+      
+      <!-- Search Query -->
+      <div class="search-form__group">
+        <label for="query" class="search-form__label">Buscar por nome</label>
+        <input 
+          type="text" 
+          id="query"
+          formControlName="query"
+          class="search-form__input"
+          placeholder="Digite o nome do filme...">
+      </div>
+
+      <!-- Genre Filter -->
+      <div class="search-form__group">
+        <label for="genre" class="search-form__label">Gênero</label>
+        <select id="genre" formControlName="genre" class="search-form__select">
+          <option value="">Todos os gêneros</option>
+          <option *ngFor="let genre of genres" [value]="genre.id">
+            {{ genre.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Year Filter -->
+      <div class="search-form__group">
+        <label for="year" class="search-form__label">Ano de Lançamento</label>
+        <input 
+          type="number" 
+          id="year"
+          formControlName="year"
+          class="search-form__input"
+          placeholder="Ex: 2023"
+          min="1900"
+          max="2030">
+      </div>
+
+
+      <!-- Clear Button -->
+      <div class="search-form__actions">
+        <button 
+          type="button" 
+          class="search-form__clear-btn"
+          (click)="clearSearch()">
+          Limpar Filtros
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

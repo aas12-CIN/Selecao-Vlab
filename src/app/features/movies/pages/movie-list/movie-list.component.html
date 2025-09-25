@@ -1,28 +1,69 @@
 <div class="movie-list-container">
-  <app-carousel
-    [titles]="'Popular Movies'"
-    [items]="popularMovies"
-    [isExplore]="false"
-    [exploreLink]="'/movies/popular'"
-    [canNavigateLeft]="true"
-    [canNavigateRight]="true">
-  </app-carousel>
+  <!-- Movie Search Component -->
+  <app-movie-search (searchModeChanged)="setSearchMode($event)"></app-movie-search>
 
-  <app-carousel
-    [titles]="'Top Rated Movies'"
-    [items]="topRatedMovies"
-    [isExplore]="false"
-    [exploreLink]="'/movies/top-rated'"
-    [canNavigateLeft]="true"
-    [canNavigateRight]="true">
-  </app-carousel>
+  <!-- Theme Generator Component -->
+  <app-theme-generator *ngIf="!isSearchMode"></app-theme-generator>
 
-  <app-carousel
-    [titles]="'Upcoming Movies'"
-    [items]="upcomingMovies"
-    [isExplore]="false"
-    [exploreLink]="'/movies/upcoming'"
-    [canNavigateLeft]="true"
-    [canNavigateRight]="true">
-  </app-carousel>
+  <!-- Show search results when in search mode -->
+  <ng-container *ngIf="isSearchMode && searchResults.length > 0">
+    <app-carousel
+      [title]="'Resultados da Busca'"
+      [items]="searchResults"
+      [isDefaultCarousel]="true"
+      [isExplore]="false">
+    </app-carousel>
+  </ng-container>
+
+  <!-- Show "No results" message when search mode is active but no results -->
+  <div *ngIf="isSearchMode && searchResults.length === 0" class="no-results">
+    <div class="no-results__content">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+        <path d="m8 8 8 8"></path>
+        <path d="m16 8-8 8"></path>
+      </svg>
+      <h3>Nenhum filme encontrado</h3>
+      <p>Tente ajustar os filtros de busca ou usar termos diferentes.</p>
+    </div>
+  </div>
+
+
+  <!-- Show all categories on home page when not in search mode -->
+  <ng-container *ngIf="!isSearchMode && currentCategory === ''">
+    <app-carousel
+      [title]="'Popular Movies'"
+      [items]="popularMovies"
+      [isDefaultCarousel]="true"
+      [isExplore]="false"
+      [exploreLink]="'/movies/popular'">
+    </app-carousel>
+
+    <app-carousel
+      [title]="'Top Rated Movies'"
+      [items]="topRatedMovies"
+      [isDefaultCarousel]="true"
+      [isExplore]="false"
+      [exploreLink]="'/movies/top-rated'">
+    </app-carousel>
+
+    <app-carousel
+      [title]="'Upcoming Movies'"
+      [items]="upcomingMovies"
+      [isDefaultCarousel]="true"
+      [isExplore]="false"
+      [exploreLink]="'/movies/upcoming'">
+    </app-carousel>
+  </ng-container>
+
+  <!-- Show specific category when on category page -->
+  <ng-container *ngIf="currentCategory !== ''">
+    <app-carousel
+      [title]="getCategoryTitle()"
+      [items]="getCurrentCategoryMovies()"
+      [isDefaultCarousel]="true"
+      [isExplore]="false">
+    </app-carousel>
+  </ng-container>
 </div>

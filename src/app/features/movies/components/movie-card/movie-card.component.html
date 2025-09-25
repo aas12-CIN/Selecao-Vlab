@@ -3,6 +3,7 @@
     <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title" class="movie-poster">
     <div class="movie-info">
       <h3 class="movie-title">{{ movie.title }}</h3>
+      <p class="movie-genre">{{ getGenreNames() }}</p>
       <p class="movie-overview">{{ movie.overview }}</p>
       <div class="movie-details">
         <span class="movie-release-date">Release: {{ movie.release_date | date:'longDate' }}</span>

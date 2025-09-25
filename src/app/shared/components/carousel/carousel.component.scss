@@ -30,14 +30,18 @@
   position: relative;
   display: flex;
   align-items: center;
+  padding: 0 1rem;
+  margin: 0 -1rem;
 
   &__items {
     display: flex;
     gap: 1rem;
     overflow-x: auto;
+    overflow-y: visible;
     scroll-behavior: smooth;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    padding: 1rem 0;
 
     &::-webkit-scrollbar {
       display: none;
@@ -87,15 +91,19 @@
 .card {
   flex: 0 0 200px;
   min-width: 200px;
+  position: relative;
+  z-index: 1;
 
   &__link {
     display: block;
     text-decoration: none;
     color: inherit;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease-in-out;
 
     &:hover {
       transform: scale(1.05);
+      z-index: 10;
+      position: relative;
     }
   }
 
@@ -126,8 +134,19 @@
   &__name {
     font-size: 1rem;
     font-weight: 500;
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.25rem 0;
     color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__genre {
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin: 0 0 0.5rem 0;
+    color: #007bff;
+    font-style: italic;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -137,6 +156,11 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__add-marathon {
+    margin-top: 0.5rem;
   }
 
   &__stars {
@@ -159,6 +183,37 @@
   &__vote {
     font-size: 0.9rem;
     color: #ccc;
+  }
+}
+
+.add-to-marathon-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
   }
 }
 

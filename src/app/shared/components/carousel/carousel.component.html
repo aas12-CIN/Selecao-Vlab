@@ -32,12 +32,19 @@
             @if (isDefaultCarousel) {
               <div>
                 <h2 class="card__name">{{ item.title }}</h2>
+                <p class="card__genre">{{ item.genre }}</p>
                 <div class="card__rating">
                   <div class="card__stars">
                     <div [style.width.%]="item.rating"></div>
                   </div>
                   <div class="card__vote">{{ item.vote }}</div>
                 </div>
+                <button 
+                  class="add-to-marathon-btn" 
+                  (click)="addToMarathon($event, item)"
+                  title="Adicionar à Maratona">
+                  Adicionar
+                </button>
               </div>
             }
 
